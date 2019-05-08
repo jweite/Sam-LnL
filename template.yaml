@@ -1,0 +1,25 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  calc-lambda
+
+  A simple calculator lambda function
+
+Resources:
+  CalculatorFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: ./
+      Handler: calc-lambda.lambda_handler
+      Runtime: python3.6
+      Events:
+        CalcAPI:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /calc
+            Method: post
+
+Outputs:
+  CalcApi:
+    Description: "API Gateway endpoint URL for Prod stage for Calc function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/calc/"
