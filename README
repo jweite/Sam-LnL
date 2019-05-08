@@ -1,0 +1,29 @@
+Demo Script
+1) Show the Lambda
+2) Run/debug in pure local (i.e. in VSCode)
+3) Show/describe the template
+4) Convert template to plain-old-Cloudformation and show how verbose it is. 
+    sam validate --debug
+5) Invoke the lambda locally
+    echo "{\"formula\":\"9 + 3\"}" | sam local invoke
+6) Invoke the API locally
+    sam local start-API
+    curl -X POST -H "Content-Type: application/json" -d '{ "formula": "6 + 5" }' http://127.0.0.1:3000/calc
+7) Implement a new feature: subtraction (but with a bug...)
+    - Make the split regex ([\+,\-]) 
+    - Add (buggy) code to do this:
+        elif op == '-':
+            retVal['answer'] = b-a
+8) Show how hotloader makes change immediately available to the API
+    curl -X POST -H "Content-Type: application/json" -d '{ "formula": "6 - 5" }' http://127.0.0.1:3000/calc
+        ...but: the answer's wrong.
+9) Remote-debug with a breakpoint on the "retVal['answer'] = b-a" line
+        Inspect variable values.
+        Fix the bug (should be a-b)
+        Demo how this is also hot-deploys
+10) Package
+        TBD
+11) Deploy to AWS.
+        TBD
+12) Invoke against AWS.
+
