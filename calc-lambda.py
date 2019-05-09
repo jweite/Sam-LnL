@@ -1,5 +1,12 @@
 import json
 import re
+import ptvsd
+
+# Enable ptvsd on 0.0.0.0 address and on port 5890 that we'll connect later with our IDE
+#ptvsd.enable_attach(address=('0.0.0.0', 5890), redirect_output=True)
+#print("about to wait for debugger")
+#ptvsd.wait_for_attach()
+#print("debugger attached")
 
 def lambda_handler(event, context):
     if 'body' in event and isinstance(event['body'], str):
@@ -12,7 +19,7 @@ def lambda_handler(event, context):
 
     retVal = {}
     if op == '+':
-       retVal['answer'] = a+b 
+       retVal['answer'] = a + b
     else:
        return {"statusCode": 500, "body": "Unknown operator in formula"}
  
