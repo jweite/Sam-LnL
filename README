@@ -9,8 +9,8 @@ Demo Script
 6) Invoke the API locally
     sam build --template template.yaml --build-dir build/ --manifest ./requirements.txt --use-container
     cd build
-        show the build directory contents
-    sam local start-api
+        show the build directory contents: packages loaded in lambda-compatible style
+    sam local start-api -d 5890
     curl -X POST -H "Content-Type: application/json" -d '{ "formula": "6 + 5" }' http://127.0.0.1:3000/calc
 7) Implement a new feature: subtraction (but with a bug...)
     - Make the split regex ([\+,\-]) 
@@ -23,20 +23,20 @@ Demo Script
 9) Remote-debug with a breakpoint on the "retVal['answer'] = b - a" line
         Uncomment the two ptvsd lines at the top of the module
         Save / Build
-        Restart sam local start-api in debug mode:  add -d 5890
         In VSCode 
             Go to the Debug view
             Select the "Python: Remote Attach - sam local" profile
             Set a breakpoint on the new "b - a" line.   
-        Send a test request: 
+        Send a test request:  (You can't connect the debugger until you do)
             curl -X POST -H "Content-Type: application/json" -d '{ "formula": "6 - 5" }' http://127.0.0.1:3000/calc
         Launch the VSCode debugger with the green "Play" triangle at the top-left.
             Observe the breakpoint gets hit.
             Inspect some variables
             Identify the bug (should be a - b)
             Run the debugger to completion
-        Fix the bug, save, build
-        Test again
+                (Note that you want to debug again you'll have to send a test request AND connect again).
+        Fix the bug, save, build.
+        Test again; success.
 10) Package
         TBD
 11) Deploy to AWS.
