@@ -7,8 +7,8 @@ Demo Script
 5) Invoke the lambda locally
     echo "{\"formula\":\"9 + 3\"}" | sam local invoke
 6) Invoke the API locally
-    sam build --template template.yaml --build-dir build/ --manifest ./requirements.txt --use-container
-    cd build
+    sam build --template template.yaml --manifest ./requirements.txt --use-container
+    cd .aws-sam/build
         show the build directory contents: packages loaded in lambda-compatible style
     sam local start-api -d 5890
     curl -X POST -H "Content-Type: application/json" -d '{ "formula": "6 + 5" }' http://127.0.0.1:3000/calc
@@ -38,7 +38,7 @@ Demo Script
         Fix the bug, save, build.
         Test again; success.
 10) Package
-        TBD
+        sam package --template template.yaml --s3-bucket _______
 11) Deploy to AWS.
         TBD
 12) Invoke against AWS.

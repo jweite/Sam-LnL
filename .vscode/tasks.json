@@ -6,7 +6,7 @@
         {
             "label": "copy py files to build",
             "type": "shell",
-            "command": "mkdir -p build/CalculatorFunction & cp *.py build/CalculatorFunction/",
+            "command": "mkdir -p .aws-sam/build/CalculatorFunction & cp *.py .aws-sam/build/CalculatorFunction/",
             "group": {
                 "kind": "build",
                 "isDefault": true
