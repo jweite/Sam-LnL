@@ -5,11 +5,13 @@ Demo Script
 4) Convert template to plain-old-Cloudformation and show how verbose it is. 
     sam validate --debug
 5) Invoke the lambda locally
+    sam build --template template.yaml --manifest ./requirements.txt --use-container
+    ls .aws-sam/build
+        show the build directory contents: packages loaded in lambda-compatible style
+6) Invoke the lambda locally
     echo "{\"formula\":\"9 + 3\"}" | sam local invoke
 6) Invoke the API locally
-    sam build --template template.yaml --manifest ./requirements.txt --use-container
     cd .aws-sam/build
-        show the build directory contents: packages loaded in lambda-compatible style
     sam local start-api -d 5890
     curl -X POST -H "Content-Type: application/json" -d '{ "formula": "6 + 5" }' http://127.0.0.1:3000/calc
 7) Implement a new feature: subtraction (but with a bug...)
@@ -29,6 +31,8 @@ Demo Script
             Set a breakpoint on the new "b - a" line.   
         Send a test request:  (You can't connect the debugger until you do)
             curl -X POST -H "Content-Type: application/json" -d '{ "formula": "6 - 5" }' http://127.0.0.1:3000/calc
+        Set VSCode Debug mode to "Python: Remote Attach - sam local"
+            (Drop-down box, upper left, next to "Debug |>|")
         Launch the VSCode debugger with the green "Play" triangle at the top-left.
             Observe the breakpoint gets hit.
             Inspect some variables
@@ -38,8 +42,14 @@ Demo Script
         Fix the bug, save, build.
         Test again; success.
 10) Package
-        sam package --template template.yaml --s3-bucket _______
+        !!! Comment out the two debugger lines at the top and save !!!
+        cd ../..
+            (i.e. back to project root)
+        sam package --template template.yaml --output-template-name templated.yaml --s3-bucket <yourBucketNameHere>
+        show uploaded package in s3 console
 11) Deploy to AWS.
-        TBD
+        aws cloudformation deploy --template-file templated.yaml --stack-name Sam-LnL --capabilities CAPABILITY_IAM
 12) Invoke against AWS.
-
+        Get API URL: aws cloudformation describe-stacks --stack-name Sam-LnL
+            find "Outputs" section: OutputKey = CalcApi; copy OutputValue
+        curl -X POST -H "Content-Type: application/json" -d '{ "formula": "6 + 5" }' <API URL>
